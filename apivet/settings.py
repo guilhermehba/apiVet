@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'paciente',
     'usuario',
-    'cpa',
     'rest_framework',
     'corsheaders',
 ]
@@ -58,6 +57,7 @@ MIDDLEWARE = [
 #CAMINHO QUE O CORS PERMITE Q ACESSE A API
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:4200',
+    'https://wellysson.letsborashopping.com'
 )
 ROOT_URLCONF = 'apivet.urls'
 

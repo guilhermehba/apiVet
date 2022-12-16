@@ -192,6 +192,9 @@ class AnamneseGeral (models.Model):
 
     CondicaoDeVida = models.CharField(max_length=1024, verbose_name='Condição de Vida')
 
+
+    def __str__(self):
+        return self.queixaPrincipal
 class AnamneseEspecial (models.Model):
     paciente = models.ForeignKey('Paciente', on_delete=models.PROTECT)
 
@@ -210,6 +213,7 @@ class AnamneseEspecial (models.Model):
     sn = models.CharField(max_length=1024, verbose_name='S.N.')
     
     historicoImunizacao = models.CharField(max_length=1024, verbose_name='Histórico de imunização')
+
 
 class ExameObjetivo (models.Model):
     paciente = models.ForeignKey('Paciente', on_delete=models.PROTECT)
@@ -266,15 +270,17 @@ class ExameObjetivo (models.Model):
 
     diagProvisorio = models.CharField(max_length=1024, verbose_name='Diagnóstico Provisório')
 
-class ExamesComplementares (models.Model):
+class ExameComplementar (models.Model):
     paciente = models.ForeignKey('Paciente', on_delete=models.PROTECT)
 
     examesComplementares = models.CharField(max_length=1024, verbose_name='Exames Complementares')
 
     anexo = models.FileField(upload_to='base')
 
+
+    def __str__(self):
+        return self.examesComplementares
 class Medicacao(models.Model):
-    paciente = models.ForeignKey('Paciente', on_delete=models.PROTECT)
 
     nomeRemedio = models.CharField(max_length=256, verbose_name='Nome do medicamento')
 
@@ -284,6 +290,8 @@ class Medicacao(models.Model):
 
     duracao = models.CharField (max_length=10, verbose_name='Duração')
 
+    def __str__(self):
+        return self.nomeRemedio
 class Conclusao (models.Model):
     paciente = models.ForeignKey('Paciente', on_delete=models.PROTECT)
 
@@ -295,11 +303,19 @@ class Conclusao (models.Model):
 
     tratamentoPrescrito = models.CharField(max_length=1024, verbose_name='Tratamento Prescrito')
 
-    medicacao = (Medicacao)
+    medicacao = models.OneToOneField(Medicacao, on_delete=models.CASCADE, null=True)
 
     obs = models.CharField(max_length=1024, verbose_name='OBS')
 
-class Observacoes (models.Model):
+   
+    def __str__(self):
+        return self.diagPrincipal
+class Observacao (models.Model):
     paciente = models.ForeignKey('Paciente', on_delete=models.PROTECT)
 
     observacoesAdd = models.CharField(max_length=2048, verbose_name='Observações Adicionais')
+
+   
+
+    def __str__(self):
+        return self.observacoesAdd

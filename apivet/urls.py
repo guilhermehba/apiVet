@@ -2,6 +2,7 @@
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from usuario.views import UsuarioViewSet
 from paciente.views import PacienteViewSet, ProprietarioViewSet, AnamneseGeralViewSet, AnamneseEspecialViewSet,ExameObjetivoViewSet, ExameComplementarViewSet,MedicacaoViewSet,ConclusaoViewSet,ObservacaoViewSet
@@ -49,6 +50,8 @@ router.register(
 
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
+    path('token/', TokenObtainPairView.as_view()),
+    path('token/refresh/', TokenRefreshView.as_view()),
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
 ]

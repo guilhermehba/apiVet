@@ -1,9 +1,10 @@
 from .models import Paciente, Proprietario, AnamneseGeral, AnamneseEspecial, ExameObjetivo, ExameComplementar, Medicacao, Conclusao, Observacao
 from rest_framework import viewsets
 from .serializers import PacienteSerializer, ProprietarioSerializer,AnamneseGeralSerializer,AnamneseEspecialSerializer, ExameObjetivoSerializer, ExameComplementarSerializer, MedicacaoSerializer,ConclusaoSerializer, ObservacaoSerializer
-
+from rest_framework.permissions import IsAuthenticated
 
 class PacienteViewSet(viewsets.ModelViewSet):
+    permission_classes=(IsAuthenticated)
     serializer_class = PacienteSerializer
     queryset = Paciente.objects.all()
 

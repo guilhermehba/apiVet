@@ -1,5 +1,5 @@
 from django.db import models
-
+from rest_framework import request
 ESPECIE_CHOICES = (
     ('CANINO', 'CANINO'),
     ('FELINO', 'FELINO'),
@@ -135,6 +135,7 @@ SEXO_CHOICES = (
     ('FÊMEA', 'FÊMEA')
 )
 
+
 class Proprietario (models.Model):
     nome = models.CharField(
         max_length=256, verbose_name='Nome do Proprietario')
@@ -167,7 +168,8 @@ class Paciente (models.Model):
 
     idade = models.CharField(max_length=3, verbose_name='Idade do Paciente')
 
-    sexo = models.CharField(max_length=64, choices=SEXO_CHOICES,verbose_name='Sexo do Paciente', null=True)
+    sexo = models.CharField(max_length=64, choices=SEXO_CHOICES,
+                            verbose_name='Sexo do Paciente', null=True)
 
     corPelagem = models.CharField(
         choices=PELAGEM_CHOICES, max_length=64, verbose_name='Cor do pelo do Paciente')
@@ -180,23 +182,32 @@ class Paciente (models.Model):
 
     def __str__(self):
         return self.nome
+
+
 class AnamneseGeral (models.Model):
-    
     paciente = models.ForeignKey('Paciente', on_delete=models.PROTECT)
 
-    queixaPrincipal = models.CharField(max_length=1024, verbose_name='Queixa Principal')
+    queixaPrincipal = models.CharField(
+        max_length=1024, verbose_name='Queixa Principal')
 
-    historicoDoencaAtual = models.CharField(max_length=1024, verbose_name='Histórico de Doença Atual')
+    historicoDoencaAtual = models.CharField(
+        max_length=1024, verbose_name='Histórico de Doença Atual')
 
-    antecedentesMorbidos = models.CharField(max_length=1024, verbose_name='Antecedentes Mórbidos')
+    antecedentesMorbidos = models.CharField(
+        max_length=1024, verbose_name='Antecedentes Mórbidos')
 
-    CondicaoDeVida = models.CharField(max_length=1024, verbose_name='Condição de Vida')
-
+    CondicaoDeVida = models.CharField(
+        max_length=1024, verbose_name='Condição de Vida')
 
     def __str__(self):
         return self.queixaPrincipal
+
+
 class AnamneseEspecial (models.Model):
-    paciente = models.ForeignKey('Paciente', on_delete=models.PROTECT)
+    paciente = models.ForeignKey(
+        'Paciente', on_delete=models.PROTECT, null=True)
+    base = models.ForeignKey(
+        'AnamneseGeral', on_delete=models.PROTECT, null=True)
 
     olhos = models.CharField(max_length=1024, verbose_name='Olhos')
 
@@ -209,46 +220,60 @@ class AnamneseEspecial (models.Model):
     sd = models.CharField(max_length=1024, verbose_name='S.D.')
 
     sgu = models.CharField(max_length=1024, verbose_name='S.G.U.')
-    
+
     sn = models.CharField(max_length=1024, verbose_name='S.N.')
-    
-    historicoImunizacao = models.CharField(max_length=1024, verbose_name='Histórico de imunização')
+
+    historicoImunizacao = models.CharField(
+        max_length=1024, verbose_name='Histórico de imunização')
 
 
 class ExameObjetivo (models.Model):
-    paciente = models.ForeignKey('Paciente', on_delete=models.PROTECT)
+    paciente = models.ForeignKey(
+        'Paciente', on_delete=models.PROTECT, null=True)
+    base = models.ForeignKey(
+        'AnamneseGeral', on_delete=models.PROTECT, null=True)
 
-    temperaturaRetal = models.CharField(max_length=1024, verbose_name='Temperatúra Retal Cº')
+    temperaturaRetal = models.CharField(
+        max_length=1024, verbose_name='Temperatúra Retal Cº')
 
     ectoscopia = models.CharField(max_length=1024, verbose_name='Ectoscopia')
 
     srNariz = models.CharField(max_length=1024, verbose_name='S.R. Nariz')
 
-    srTorazInspecaoFr = models.CharField(max_length=1024, verbose_name='S.R. Tórax (Inspeção F.R)')
+    srTorazInspecaoFr = models.CharField(
+        max_length=1024, verbose_name='S.R. Tórax (Inspeção F.R)')
 
-    tipoMovimento = models.CharField(max_length=1024, verbose_name='Tipo de movimento')
+    tipoMovimento = models.CharField(
+        max_length=1024, verbose_name='Tipo de movimento')
 
     polpacao = models.CharField(max_length=1024, verbose_name='Polpação')
 
     percussao = models.CharField(max_length=1024, verbose_name='Percussão')
 
-    aucusticaPulmonar = models.CharField(max_length=1024, verbose_name='Aucústica Pulmonar')
+    aucusticaPulmonar = models.CharField(
+        max_length=1024, verbose_name='Aucústica Pulmonar')
 
-    scCoracaoFc = models.CharField(max_length=1024, verbose_name='S.C. Coração F.C.')
+    scCoracaoFc = models.CharField(
+        max_length=1024, verbose_name='S.C. Coração F.C.')
 
     ritmo = models.CharField(max_length=1024, verbose_name='Ritmo')
 
-    aucusticaPalpacao = models.CharField(max_length=1024, verbose_name='Aucústica Palpação')
+    aucusticaPalpacao = models.CharField(
+        max_length=1024, verbose_name='Aucústica Palpação')
 
-    pulsoArterial = models.CharField(max_length=1024, verbose_name='Pulso Arterial')
+    pulsoArterial = models.CharField(
+        max_length=1024, verbose_name='Pulso Arterial')
 
-    alteracoesVasculares = models.CharField(max_length=1024, verbose_name='Alterações Vasculares')
+    alteracoesVasculares = models.CharField(
+        max_length=1024, verbose_name='Alterações Vasculares')
 
-    shlLifonodos = models.CharField(max_length=1024, verbose_name='S.H.L Linfonodos')
+    shlLifonodos = models.CharField(
+        max_length=1024, verbose_name='S.H.L Linfonodos')
 
     baco = models.CharField(max_length=1024, verbose_name='Baço')
 
-    sdViasDigestoriasAnteriores = models.CharField(max_length=1024, verbose_name='S.D. Vias Digestórias Anteriores')
+    sdViasDigestoriasAnteriores = models.CharField(
+        max_length=1024, verbose_name='S.D. Vias Digestórias Anteriores')
 
     abdomen = models.CharField(max_length=1024, verbose_name='Abdomen')
 
@@ -262,60 +287,81 @@ class ExameObjetivo (models.Model):
 
     sn = models.CharField(max_length=1024, verbose_name='S.N.')
 
-    orgaosSentidosOlhosOuvidos = models.CharField(max_length=1024, verbose_name='Orgão dos Sentidos, Olhos e Ouvidos')
+    orgaosSentidosOlhosOuvidos = models.CharField(
+        max_length=1024, verbose_name='Orgão dos Sentidos, Olhos e Ouvidos')
 
-    aparelhoLocomotor = models.CharField(max_length=1024, verbose_name='Aparelho Locomotor')
+    aparelhoLocomotor = models.CharField(
+        max_length=1024, verbose_name='Aparelho Locomotor')
 
-    apreciacaoAchados = models.CharField(max_length=1024, verbose_name='Apreciação dos Achados')
+    apreciacaoAchados = models.CharField(
+        max_length=1024, verbose_name='Apreciação dos Achados')
 
-    diagProvisorio = models.CharField(max_length=1024, verbose_name='Diagnóstico Provisório')
+    diagProvisorio = models.CharField(
+        max_length=1024, verbose_name='Diagnóstico Provisório')
+
 
 class ExameComplementar (models.Model):
-    paciente = models.ForeignKey('Paciente', on_delete=models.PROTECT)
+    paciente = models.ForeignKey(
+        'Paciente', on_delete=models.PROTECT, null=True)
+    base = models.ForeignKey(
+        'AnamneseGeral', on_delete=models.PROTECT, null=True)
 
-    examesComplementares = models.CharField(max_length=1024, verbose_name='Exames Complementares')
+    examesComplementares = models.CharField(
+        max_length=1024, verbose_name='Exames Complementares')
 
     anexo = models.FileField(upload_to='base')
 
-
     def __str__(self):
         return self.examesComplementares
-class Medicacao(models.Model):
 
-    nomeRemedio = models.CharField(max_length=256, verbose_name='Nome do medicamento')
+
+class Medicacao(models.Model):
+    nomeRemedio = models.CharField(
+        max_length=256, verbose_name='Nome do medicamento')
 
     dose = models.CharField(max_length=4, verbose_name='Dose(Mg/Kg)')
 
-    frequencia = models.CharField (max_length=64, verbose_name='Frequencia')
+    frequencia = models.CharField(max_length=64, verbose_name='Frequencia')
 
-    duracao = models.CharField (max_length=10, verbose_name='Duração')
+    duracao = models.CharField(max_length=10, verbose_name='Duração')
 
     def __str__(self):
         return self.nomeRemedio
+
+
 class Conclusao (models.Model):
-    paciente = models.ForeignKey('Paciente', on_delete=models.PROTECT)
+    base = models.ForeignKey(
+        'AnamneseGeral', on_delete=models.PROTECT, null=True)
+    paciente = models.ForeignKey(
+        'Paciente', on_delete=models.PROTECT, null=True)
 
-    diagPrincipal = models.CharField(max_length=1024, verbose_name='Diagnóstico Principal')
+    diagPrincipal = models.CharField(
+        max_length=1024, verbose_name='Diagnóstico Principal')
 
-    outrosDiags = models.CharField(max_length=1024, verbose_name='Outros Diagnósticos')
+    outrosDiags = models.CharField(
+        max_length=1024, verbose_name='Outros Diagnósticos')
 
     prognostico = models.CharField(max_length=1024, verbose_name='Prognóstico')
 
-    tratamentoPrescrito = models.CharField(max_length=1024, verbose_name='Tratamento Prescrito')
+    tratamentoPrescrito = models.CharField(
+        max_length=1024, verbose_name='Tratamento Prescrito')
 
-    medicacao = models.OneToOneField(Medicacao, on_delete=models.CASCADE, null=True)
+    medicacao = models.ForeignKey(Medicacao, on_delete=models.CASCADE, null=True, blank=True)
+
 
     obs = models.CharField(max_length=1024, verbose_name='OBS')
 
-   
     def __str__(self):
         return self.diagPrincipal
+
 class Observacao (models.Model):
-    paciente = models.ForeignKey('Paciente', on_delete=models.PROTECT)
+    base = models.ForeignKey(
+        'AnamneseGeral', on_delete=models.PROTECT, null=True)
+    paciente = models.ForeignKey(
+        'Paciente', on_delete=models.PROTECT, null=True)
 
-    observacoesAdd = models.CharField(max_length=2048, verbose_name='Observações Adicionais')
-
-   
+    observacoesAdd = models.CharField(
+        max_length=2048, verbose_name='Observações Adicionais')
 
     def __str__(self):
         return self.observacoesAdd

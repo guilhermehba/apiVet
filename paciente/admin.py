@@ -28,7 +28,7 @@ admin.site.register(AnamneseGeral, AnamneseGeralAdmin)
 
 
 class AnamneseEspecialAdmin(admin.ModelAdmin):
-    list_display = ('paciente', 'olhos', 'ouvidos',
+    list_display = ('olhos', 'ouvidos',
                     'sr', 'sc', 'sd', 'sgu', 'sn', 'historicoImunizacao')
 
 
@@ -36,7 +36,7 @@ admin.site.register(AnamneseEspecial, AnamneseEspecialAdmin)
 
 
 class ExameObjetivoAdmin(admin.ModelAdmin):
-    list_display = ('paciente', 'temperaturaRetal', 'ectoscopia',
+    list_display = ('temperaturaRetal', 'ectoscopia',
                     'srNariz', 'srTorazInspecaoFr', 'tipoMovimento',
                     'polpacao', 'percussao', 'aucusticaPulmonar', 'scCoracaoFc',
                     'ritmo', 'aucusticaPalpacao', 'pulsoArterial',
@@ -51,7 +51,7 @@ admin.site.register(ExameObjetivo, ExameObjetivoAdmin)
 
 
 class ExamesComplementaresAdmin(admin.ModelAdmin):
-    list_display = ('paciente', 'examesComplementares', 'anexo')
+    list_display = ('examesComplementares', 'anexo')
 
 
 admin.site.register(ExameComplementar, ExamesComplementaresAdmin)
@@ -63,13 +63,13 @@ class MedicacaoAdmin(admin.ModelAdmin):
 admin.site.register(Medicacao, MedicacaoAdmin)
 
 class ConclusaoAdmin(admin.ModelAdmin):
-    list_display = ('paciente', 'diagPrincipal', 'outrosDiags', 'prognostico', 'tratamentoPrescrito', 'medicacao', 'obs')
+    list_display = ('diagPrincipal', 'outrosDiags', 'prognostico', 'tratamentoPrescrito', 'medicacao', 'obs')
 
 
 admin.site.register(Conclusao, ConclusaoAdmin)
 
 class ObservacoesAdmin(admin.ModelAdmin):
-    list_display = ('paciente', 'observacoesAdd')
+    list_display = ('observacoesAdd',)
 
 
 admin.site.register(Observacao, ObservacoesAdmin)
